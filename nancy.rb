@@ -22,6 +22,16 @@ module Nancy
   end
 end
 
+def call(env)
+  @request = Rack::Request.new(env)
+  verb = @request.request_method
+  requested_path = @request.path_info
+
+  handler = @routes[verb][requested_path]
+
+  handler.call
+end
+
 nancy = Nancy::Base.new
 
 nancy.get "/hello" do
